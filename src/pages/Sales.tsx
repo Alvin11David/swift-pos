@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { usePos } from "@/store/posStore";
-import { CartItem, Product } from "@/types/pos";
+import { CartItem, Product, Sale } from "@/types/pos";
 import { toast } from "sonner";
+import { ReceiptDialog } from "@/components/ReceiptDialog";
 
 const TAX_RATE = 0.08;
 
@@ -16,7 +17,8 @@ export default function Sales() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("All");
-  const [success, setSuccess] = useState<{ id: string; total: number } | null>(null);
+  const [success, setSuccess] = useState<Sale | null>(null);
+  const [receiptOpen, setReceiptOpen] = useState(false);
 
   const categories = useMemo(() => {
     const set = new Set(products.map((p) => p.category ?? "Other"));
@@ -54,14 +56,14 @@ export default function Sales() {
 
   const completeSale = () => {
     if (cart.length === 0) return;
-    const sale = {
+    const sale: Sale = {
       id: crypto.randomUUID(),
       items: cart,
       total,
       createdAt: new Date().toISOString(),
     };
     recordSale(sale);
-    setSuccess({ id: sale.id, total });
+    setSuccess(sale);
     setCart([]);
     toast.success("Sale completed!");
   };
