@@ -164,9 +164,14 @@ export default function Sales() {
               <p className="text-xs text-muted-foreground mt-1">
                 #{success.id.slice(0, 6).toUpperCase()} · ${success.total.toFixed(2)}
               </p>
-              <Button variant="outline" size="sm" className="mt-4" onClick={() => setSuccess(null)}>
-                New order
-              </Button>
+              <div className="mt-4 flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => setReceiptOpen(true)}>
+                  View receipt
+                </Button>
+                <Button size="sm" className="shadow-glow" onClick={() => setSuccess(null)}>
+                  New order
+                </Button>
+              </div>
             </div>
           )}
 
