@@ -1,15 +1,21 @@
-import { useMemo } from "react";
-import { DollarSign, Receipt, ShoppingBag, TrendingUp } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DollarSign, Receipt, ShoppingBag, TrendingUp, Plus, Eye } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/StatCard";
+import { ReceiptDialog } from "@/components/ReceiptDialog";
 import { usePos } from "@/store/posStore";
+import { Sale } from "@/types/pos";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const formatCurrency = (n: number) => `$${n.toFixed(2)}`;
 
 export default function Dashboard() {
   const { sales } = usePos();
+  const navigate = useNavigate();
+  const [selected, setSelected] = useState<Sale | null>(null);
 
   const today = new Date().toDateString();
   const todaysSales = sales.filter((s) => new Date(s.createdAt).toDateString() === today);
@@ -21,7 +27,7 @@ export default function Dashboard() {
   const totalRevenue = sales.reduce((a, s) => a + s.total, 0);
 
   const chartData = useMemo(() => {
-    const days = Array.from({ length: 7 }).map((_, i) => {
+    return Array.from({ length: 7 }).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
       const key = d.toDateString();
@@ -33,7 +39,6 @@ export default function Dashboard() {
         sales: Number(total.toFixed(2)),
       };
     });
-    return days;
   }, [sales]);
 
   return (
@@ -43,9 +48,14 @@ export default function Dashboard() {
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Welcome back, Jamie 👋</h1>
           <p className="text-sm text-muted-foreground mt-1">Here's what's happening in your store today.</p>
         </div>
-        <Badge variant="secondary" className="rounded-full px-3 py-1.5 text-xs font-medium">
-          {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="rounded-full px-3 py-1.5 text-xs font-medium">
+            {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}
+          </Badge>
+          <Button onClick={() => navigate("/sales")} className="gap-2 shadow-glow transition-base hover:scale-[1.02]">
+            <Plus className="h-4 w-4" /> New Sale
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -110,28 +120,38 @@ export default function Dashboard() {
               </div>
               <p className="text-sm font-medium">No sales yet</p>
               <p className="text-xs text-muted-foreground mt-1">Complete your first sale to see it here.</p>
+              <Button size="sm" className="mt-4 gap-2" onClick={() => navigate("/sales")}>
+                <Plus className="h-3.5 w-3.5" /> Start a sale
+              </Button>
             </div>
           ) : (
             <ul className="space-y-3">
               {sales.slice(0, 6).map((s) => (
-                <li
-                  key={s.id}
-                  className="flex items-center justify-between rounded-xl border border-border/60 p-3 transition-base hover:border-primary/30 hover:bg-secondary/40"
-                >
-                  <div>
-                    <p className="text-sm font-medium">#{s.id.slice(0, 6).toUpperCase()}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {s.items.reduce((a, i) => a + i.quantity, 0)} items ·{" "}
-                      {new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </p>
-                  </div>
-                  <span className="text-sm font-semibold">{formatCurrency(s.total)}</span>
+                <li key={s.id}>
+                  <button
+                    onClick={() => setSelected(s)}
+                    className="group flex w-full items-center justify-between rounded-xl border border-border/60 p-3 text-left transition-base hover:border-primary/30 hover:bg-secondary/40"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">#{s.id.slice(0, 6).toUpperCase()}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {s.items.reduce((a, i) => a + i.quantity, 0)} items ·{" "}
+                        {new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold">{formatCurrency(s.total)}</span>
+                      <Eye className="h-4 w-4 text-muted-foreground opacity-0 transition-base group-hover:opacity-100" />
+                    </div>
+                  </button>
                 </li>
               ))}
             </ul>
           )}
         </Card>
       </div>
+
+      <ReceiptDialog sale={selected} open={!!selected} onOpenChange={(o) => !o && setSelected(null)} />
     </div>
   );
 }
