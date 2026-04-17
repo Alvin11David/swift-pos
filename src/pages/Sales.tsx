@@ -236,6 +236,8 @@ export default function Sales() {
           </>
         )}
       </Card>
+
+      <ReceiptDialog sale={success} open={receiptOpen} onOpenChange={setReceiptOpen} />
     </div>
   );
 }
