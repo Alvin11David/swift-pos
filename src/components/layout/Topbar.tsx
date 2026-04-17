@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Bell, LogOut, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { Bell, BookOpen, LogOut, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { ROLE_LABEL, useAuth } from "@/store/authStore";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,13 @@ import { toast } from "sonner";
 export function Topbar() {
   const navigate = useNavigate();
   const { products, sales } = usePos();
+  const { currentUser, logout } = useAuth();
+  const initials = (currentUser?.fullName || currentUser?.username || "U")
+    .split(" ")
+    .map((s) => s[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
