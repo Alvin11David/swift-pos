@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Bell, LogOut, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { Bell, BookOpen, LogOut, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { ROLE_LABEL, useAuth } from "@/store/authStore";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,13 @@ import { toast } from "sonner";
 export function Topbar() {
   const navigate = useNavigate();
   const { products, sales } = usePos();
+  const { currentUser, logout } = useAuth();
+  const initials = (currentUser?.fullName || currentUser?.username || "U")
+    .split(" ")
+    .map((s) => s[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -193,33 +201,48 @@ export function Topbar() {
             <button className="flex items-center gap-2.5 rounded-full border border-border bg-card px-1.5 py-1 pr-3 shadow-sm transition-base hover:shadow-soft hover:border-primary/30">
               <Avatar className="h-7 w-7">
                 <AvatarFallback className="gradient-primary text-[11px] font-semibold text-primary-foreground">
-                  JM
+                  {initials}
                 </AvatarFallback>
               </Avatar>
               <div className="hidden sm:flex flex-col leading-tight items-start">
-                <span className="text-xs font-semibold">Jamie Miles</span>
-                <span className="text-[10px] text-muted-foreground">Cashier</span>
+                <span className="text-xs font-semibold">
+                  {currentUser?.fullName || currentUser?.username || "Guest"}
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  {currentUser ? ROLE_LABEL[currentUser.role] : "Not signed in"}
+                </span>
               </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold">Jamie Miles</span>
-                <span className="text-xs font-normal text-muted-foreground">jamie@jambopos.com</span>
+                <span className="text-sm font-semibold">
+                  {currentUser?.fullName || currentUser?.username || "Guest"}
+                </span>
+                <span className="text-xs font-normal text-muted-foreground">
+                  @{currentUser?.username ?? "guest"} ·{" "}
+                  {currentUser ? ROLE_LABEL[currentUser.role] : "—"}
+                </span>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => toast("Profile coming soon")}>
-              <User className="mr-2 h-4 w-4" /> Profile
+            <DropdownMenuItem onClick={() => navigate("/guide")}>
+              <BookOpen className="mr-2 h-4 w-4" /> User guide
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast("Settings coming soon")}>
-              <Settings className="mr-2 h-4 w-4" /> Settings
-            </DropdownMenuItem>
+            {currentUser?.role === "admin" && (
+              <DropdownMenuItem onClick={() => navigate("/staff")}>
+                <Settings className="mr-2 h-4 w-4" /> Staff & roles
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
-              onClick={() => toast.success("Signed out")}
+              onClick={() => {
+                logout();
+                toast.success("Signed out");
+                navigate("/login", { replace: true });
+              }}
             >
               <LogOut className="mr-2 h-4 w-4" /> Sign out
             </DropdownMenuItem>
