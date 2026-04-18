@@ -139,3 +139,24 @@
     transition: var(--transition-base);
   }
 }
+
+/* Print: only show the receipt */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #receipt-print, #receipt-print * {
+    visibility: visible !important;
+  }
+  #receipt-print {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    background: white !important;
+    color: black !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+}
