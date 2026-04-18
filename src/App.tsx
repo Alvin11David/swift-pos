@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PosProvider } from "@/store/posStore";
+import { PosExtraProvider } from "@/store/posExtraStore";
 import { AuthProvider } from "@/store/authStore";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -11,6 +12,10 @@ import Index from "./pages/Index.tsx";
 import Sales from "./pages/Sales.tsx";
 import Products from "./pages/Products.tsx";
 import Reports from "./pages/Reports.tsx";
+import SalesReport from "./pages/SalesReport.tsx";
+import Packages from "./pages/Packages.tsx";
+import Tables from "./pages/Tables.tsx";
+import Reservations from "./pages/Reservations.tsx";
 import Staff from "./pages/Staff.tsx";
 import Guide from "./pages/Guide.tsx";
 import Login from "./pages/Login.tsx";
@@ -59,6 +64,34 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/sales-report"
+          element={
+            <ProtectedRoute roles={["admin", "manager"]}>
+              <SalesReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/packages"
+          element={
+            <ProtectedRoute roles={["admin", "manager"]}>
+              <Packages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tables"
+          element={
+            <ProtectedRoute roles={["admin", "manager"]}>
+              <Tables />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reservations"
+          element={<ProtectedRoute><Reservations /></ProtectedRoute>}
+        />
         <Route path="/guide" element={<ProtectedRoute><Guide /></ProtectedRoute>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
@@ -74,9 +107,11 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <PosProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <PosExtraProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </PosExtraProvider>
         </PosProvider>
       </AuthProvider>
     </TooltipProvider>
