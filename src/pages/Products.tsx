@@ -12,6 +12,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { usePos } from "@/store/posStore";
 import { Product } from "@/types/pos";
@@ -27,6 +37,7 @@ export default function Products() {
   const [price, setPrice] = useState("");
   const [emoji, setEmoji] = useState("📦");
   const [query, setQuery] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState<Product | null>(null);
 
   const filtered = products.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()));
 
@@ -66,6 +77,7 @@ export default function Products() {
   const handleDelete = (p: Product) => {
     deleteProduct(p.id);
     toast.success(`${p.name} deleted`);
+    setConfirmDelete(null);
   };
 
   return (
@@ -122,7 +134,7 @@ export default function Products() {
                 <h3 className="font-semibold truncate">{p.name}</h3>
                 <p className="text-lg font-bold text-primary mt-1">${p.price.toFixed(2)}</p>
               </div>
-              <div className="mt-4 flex gap-2 opacity-0 transition-base group-hover:opacity-100">
+              <div className="mt-4 flex gap-2 transition-base sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
                 <Button variant="outline" size="sm" className="flex-1 gap-1.5" onClick={() => openEdit(p)}>
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </Button>
@@ -130,7 +142,8 @@ export default function Products() {
                   variant="outline"
                   size="sm"
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  onClick={() => handleDelete(p)}
+                  onClick={() => setConfirmDelete(p)}
+                  aria-label={`Delete ${p.name}`}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
