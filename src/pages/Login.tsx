@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Sparkles, User } from "lucide-react";
 import { useAuth } from "@/store/authStore";
@@ -15,9 +15,9 @@ export default function Login() {
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (currentUser) {
-    navigate("/", { replace: true });
-  }
+  useEffect(() => {
+    if (currentUser) navigate("/", { replace: true });
+  }, [currentUser, navigate]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

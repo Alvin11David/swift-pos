@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Bell, BookOpen, LogOut, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { Bell, BookOpen, KeyRound, LogOut, Search, Settings, ShoppingCart } from "lucide-react";
 import { ROLE_LABEL, useAuth } from "@/store/authStore";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import {
 import { useState, useMemo, useEffect, useRef } from "react";
 import { usePos } from "@/store/posStore";
 import { toast } from "sonner";
+import { ChangePasswordDialog } from "@/components/ChangePasswordDialog";
 
 export function Topbar() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export function Topbar() {
     .toUpperCase();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [pwdOpen, setPwdOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Cmd/Ctrl + K focuses search
@@ -230,6 +232,11 @@ export function Topbar() {
             <DropdownMenuItem onClick={() => navigate("/guide")}>
               <BookOpen className="mr-2 h-4 w-4" /> User guide
             </DropdownMenuItem>
+            {currentUser && (
+              <DropdownMenuItem onClick={() => setPwdOpen(true)}>
+                <KeyRound className="mr-2 h-4 w-4" /> Change password
+              </DropdownMenuItem>
+            )}
             {currentUser?.role === "admin" && (
               <DropdownMenuItem onClick={() => navigate("/staff")}>
                 <Settings className="mr-2 h-4 w-4" /> Staff & roles
@@ -249,6 +256,8 @@ export function Topbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <ChangePasswordDialog open={pwdOpen} onOpenChange={setPwdOpen} />
     </header>
   );
 }
