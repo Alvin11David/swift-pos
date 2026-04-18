@@ -1,4 +1,16 @@
-import { LayoutDashboard, Package, ShoppingCart, BarChart3, Sparkles, Users, BookOpen } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  BarChart3,
+  Sparkles,
+  Users,
+  BookOpen,
+  CreditCard,
+  Utensils,
+  CalendarDays,
+  FileText,
+} from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -26,6 +38,13 @@ const items: NavItem[] = [
   { title: "Sales", url: "/sales", icon: ShoppingCart },
   { title: "Products", url: "/products", icon: Package, roles: ["admin", "manager"] },
   { title: "Reports", url: "/reports", icon: BarChart3, roles: ["admin", "manager"] },
+];
+
+const operationsItems: NavItem[] = [
+  { title: "Reservations", url: "/reservations", icon: CalendarDays },
+  { title: "Tables", url: "/tables", icon: Utensils, roles: ["admin", "manager"] },
+  { title: "Packages", url: "/packages", icon: CreditCard, roles: ["admin", "manager"] },
+  { title: "Sales Report", url: "/sales-report", icon: FileText, roles: ["admin", "manager"] },
 ];
 
 const adminItems: NavItem[] = [
@@ -89,6 +108,13 @@ export function AppSidebar() {
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>{renderItems(items)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Operations</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(operationsItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
