@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/StatCard";
 import { ReceiptDialog } from "@/components/ReceiptDialog";
 import { usePos } from "@/store/posStore";
+import { useAuth } from "@/store/authStore";
 import { Sale } from "@/types/pos";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -14,8 +15,10 @@ const formatCurrency = (n: number) => `$${n.toFixed(2)}`;
 
 export default function Dashboard() {
   const { sales } = usePos();
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [selected, setSelected] = useState<Sale | null>(null);
+  const firstName = (currentUser?.fullName || currentUser?.username || "there").split(" ")[0];
 
   const today = new Date().toDateString();
   const todaysSales = sales.filter((s) => new Date(s.createdAt).toDateString() === today);
@@ -45,7 +48,7 @@ export default function Dashboard() {
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Welcome back, Jamie 👋</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Welcome back, {firstName} 👋</h1>
           <p className="text-sm text-muted-foreground mt-1">Here's what's happening in your store today.</p>
         </div>
         <div className="flex items-center gap-2">
