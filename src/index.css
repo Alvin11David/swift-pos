@@ -132,6 +132,12 @@
   .gradient-success {
     background: var(--gradient-success);
   }
+  .gradient-mesh {
+    background: var(--gradient-mesh);
+  }
+  .shadow-xs {
+    box-shadow: var(--shadow-xs);
+  }
   .shadow-soft {
     box-shadow: var(--shadow-md);
   }
@@ -141,8 +147,25 @@
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
+  .shadow-glow-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
   .transition-base {
     transition: var(--transition-base);
+  }
+  .transition-spring {
+    transition: var(--transition-spring);
+  }
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .glass {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }
 
