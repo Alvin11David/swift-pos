@@ -8,28 +8,28 @@
 
 @layer base {
   :root {
-    --background: 220 30% 98%;
-    --foreground: 230 25% 15%;
+    --background: 230 35% 99%;
+    --foreground: 230 30% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 230 25% 15%;
+    --card-foreground: 230 30% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 25% 15%;
+    --popover-foreground: 230 30% 12%;
 
-    --primary: 250 75% 55%;
+    --primary: 252 80% 58%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 255 85% 70%;
-    --primary-soft: 250 75% 96%;
+    --primary-glow: 268 90% 72%;
+    --primary-soft: 252 85% 97%;
 
-    --secondary: 220 20% 96%;
-    --secondary-foreground: 230 25% 15%;
+    --secondary: 230 25% 97%;
+    --secondary-foreground: 230 30% 12%;
 
-    --muted: 220 20% 96%;
-    --muted-foreground: 230 12% 50%;
+    --muted: 230 25% 97%;
+    --muted-foreground: 230 14% 48%;
 
-    --accent: 250 75% 96%;
-    --accent-foreground: 250 75% 40%;
+    --accent: 252 85% 97%;
+    --accent-foreground: 252 80% 42%;
 
     --success: 152 68% 42%;
     --success-foreground: 0 0% 100%;
