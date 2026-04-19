@@ -122,40 +122,48 @@ export default function Dashboard() {
           </div>
         </Card>
 
-        <Card className="p-6 shadow-soft">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold">Recent transactions</h3>
-            <Badge variant="secondary" className="rounded-full">{sales.length}</Badge>
+        <Card className="p-6 shadow-sm border-border/60 transition-base hover:shadow-soft">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="font-semibold text-[15px]">Recent transactions</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Latest activity</p>
+            </div>
+            <Badge variant="secondary" className="rounded-full font-medium">{sales.length}</Badge>
           </div>
           {sales.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="h-12 w-12 rounded-full bg-secondary flex items-center justify-center mb-3">
-                <Receipt className="h-5 w-5 text-muted-foreground" />
+              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-secondary to-secondary/50 flex items-center justify-center mb-3 ring-4 ring-secondary/40">
+                <Receipt className="h-6 w-6 text-muted-foreground" />
               </div>
-              <p className="text-sm font-medium">No sales yet</p>
-              <p className="text-xs text-muted-foreground mt-1">Complete your first sale to see it here.</p>
-              <Button size="sm" className="mt-4 gap-2" onClick={() => navigate("/sales")}>
+              <p className="text-sm font-semibold">No sales yet</p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-[200px]">Complete your first sale to see it here.</p>
+              <Button size="sm" className="mt-4 gap-2 rounded-xl" onClick={() => navigate("/sales")}>
                 <Plus className="h-3.5 w-3.5" /> Start a sale
               </Button>
             </div>
           ) : (
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {sales.slice(0, 6).map((s) => (
                 <li key={s.id}>
                   <button
                     onClick={() => setSelected(s)}
-                    className="group flex w-full items-center justify-between rounded-xl border border-border/60 p-3 text-left transition-base hover:border-primary/30 hover:bg-secondary/40"
+                    className="group flex w-full items-center justify-between rounded-xl border border-border/50 p-3 text-left transition-base hover:border-primary/30 hover:bg-primary-soft/40 hover:shadow-xs"
                   >
-                    <div>
-                      <p className="text-sm font-medium">#{s.id.slice(0, 6).toUpperCase()}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {s.items.reduce((a, i) => a + i.quantity, 0)} items ·{" "}
-                        {new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl bg-primary-soft flex items-center justify-center group-hover:gradient-primary transition-base">
+                        <Receipt className="h-4 w-4 text-primary group-hover:text-primary-foreground transition-base" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">#{s.id.slice(0, 6).toUpperCase()}</p>
+                        <p className="text-[11px] text-muted-foreground">
+                          {s.items.reduce((a, i) => a + i.quantity, 0)} items ·{" "}
+                          {new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </p>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold">{formatCurrency(s.total)}</span>
-                      <Eye className="h-4 w-4 text-muted-foreground opacity-0 transition-base group-hover:opacity-100" />
+                      <span className="text-sm font-bold">{formatCurrency(s.total)}</span>
+                      <Eye className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-1 transition-base group-hover:opacity-100 group-hover:translate-x-0" />
                     </div>
                   </button>
                 </li>
