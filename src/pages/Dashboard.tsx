@@ -46,16 +46,27 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Welcome back, {firstName} 👋</h1>
-          <p className="text-sm text-muted-foreground mt-1">Here's what's happening in your store today.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="rounded-full px-3 py-1.5 text-xs font-medium">
-            {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}
-          </Badge>
-          <Button onClick={() => navigate("/sales")} className="gap-2 shadow-glow transition-base hover:scale-[1.02]">
+      <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-primary via-primary to-primary-glow p-6 md:p-8 shadow-glow-lg">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(0_0%_100%/0.2),_transparent_50%)]" />
+        <div className="absolute -bottom-20 -right-10 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute top-10 right-32 h-32 w-32 rounded-full bg-white/5 blur-2xl" />
+        <div className="relative flex flex-wrap items-end justify-between gap-4">
+          <div className="text-primary-foreground">
+            <Badge className="mb-3 bg-white/15 text-white hover:bg-white/20 border-0 backdrop-blur-sm rounded-full px-3 py-1 text-[11px] font-medium">
+              {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}
+            </Badge>
+            <h1 className="text-2xl md:text-[32px] font-bold tracking-tight leading-tight">
+              Welcome back, {firstName} 👋
+            </h1>
+            <p className="text-sm md:text-[15px] text-white/80 mt-1.5 max-w-lg">
+              Here's what's happening in your store today. You're doing great!
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate("/sales")}
+            size="lg"
+            className="gap-2 bg-white text-primary hover:bg-white/95 hover:scale-[1.03] transition-spring shadow-lg font-semibold rounded-xl"
+          >
             <Plus className="h-4 w-4" /> New Sale
           </Button>
         </div>
@@ -69,13 +80,13 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="p-6 lg:col-span-2 shadow-soft">
-          <div className="flex items-center justify-between mb-4">
+        <Card className="p-6 lg:col-span-2 shadow-sm border-border/60 transition-base hover:shadow-soft">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-semibold">Sales overview</h3>
-              <p className="text-xs text-muted-foreground">Last 7 days</p>
+              <h3 className="font-semibold text-[15px]">Sales overview</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Last 7 days performance</p>
             </div>
-            <Badge className="bg-primary-soft text-primary hover:bg-primary-soft">Weekly</Badge>
+            <Badge className="bg-primary-soft text-primary hover:bg-primary-soft border-0 rounded-full px-3 font-medium">Weekly</Badge>
           </div>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
